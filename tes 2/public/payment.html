@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment - Cybersecurity Internship</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+  </script>
+
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+     
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      padding: 20px;
+    }
+    .document {
+      background: #f9f9f9;
+      color: #000;
+      border-radius: 12px;
+      padding: 40px 30px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+      margin-top: 40px;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .document-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .document-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      flex: 1;
+      text-align: center;
+      color: #222;
+    }
+    
+    .logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ff0000;
+      background: #fff;
+    }
+    
+    .document-body p {
+      margin: 12px 0;
+      font-size: 16px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 6px;
+    }
+    
+    .document-body strong {
+      display: inline-block;
+      width: 120px;
+      color: #333;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+      max-width: 500px;
+      width: 100%;
+    }
+    h1 {
+      color: #ff0000;
+      margin-bottom: 20px;
+    }
+    p {
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+    .pay-btn {
+      margin-bottom: 20px;
+      background: #ff0000;
+      color: #fff;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    .pay-btn:hover {
+      background: #cc0000;
+    }
+    .price {
+      color: #00ff00;
+      font-size: 22px;
+      margin: 10px 0 30px;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="container">
+    <h1>Pay & Register</h1>
+    <p>Cybersecurity & Ethical Hacking Internship</p>
+    <div class="price">₹299 Only</div>
+    <button class="pay-btn" onclick="payNow()">Proceed to Pay</button>
+    <button class="pay-btn" onclick="window.location.href='index.html'">GO BACK</button>
+  </div>
+  <p>please check your details</p>
+  <div id="output" class="document">
+    <div class="document-header">
+      <img src="images/gyaansatralogo.jpeg" alt="Left Logo" class="logo">
+      <h2>Internship Registration Details</h2>
+      <img src="images/ANONYMOUS india logo jpg.jpg" alt="Right Logo" class="logo">
+    </div>
+    <div class="document-body" id="output-content">
+      <!-- Content inserted by JS -->
+    </div>
+  </div>
+  <!-- ✔️ Razorpay Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  const EMAILJS_PUBLIC_KEY = "L9NlUI05OvbftO_Vr";      
+  const EMAILJS_SERVICE_ID = "service_jjq55ru";      
+  const EMAILJS_TEMPLATE_ID = "template_mnapi2y";    
+
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+
+  async function payNow() {
+    const formData = JSON.parse(localStorage.getItem("registration-form"));
+  
+    if (!formData) {
+      alert("Missing form data. Please go back and fill the registration form again.");
+      return;
+    }
+
+    try {
+      // 1. Get Razorpay Key from backend
+      const keyRes = await fetch("http://localhost:3000/get-razorpay-key");
+      const keyData = await keyRes.json();
+
+      // 2. Create order from backend
+      const orderRes = await fetch("http://localhost:3000/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const order = await orderRes.json();
+
+      // 3. Configure Razorpay payment
+      const options = {
+        key: keyData.key, // ✅ Dynamic key from backend
+        amount: order.amount,
+        currency: "INR",
+        name: "GYAAN SATRA",
+        description: "Cybersecurity Internship Registration",
+        order_id: order.id,
+
+        handler: async function (response) {
+          // 4. Verify payment
+          const verifyRes = await fetch("http://localhost:3000/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
+          });
+
+          const verifyResult = await verifyRes.json();
+
+          if (verifyResult.status === "success") {
+            // 5. Send Email
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, formData)
+              .then(() => {
+                localStorage.removeItem("registration-form");
+                window.location.href = "success.html";
+              })
+              .catch((error) => {
+                alert("Payment succeeded but email failed. Please contact support.");
+                console.error("EmailJS Error:", error);
+              });
+          } else {
+            alert("Payment verification failed. Please contact support.");
+          }
+        },
+
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+          contact: formData.phone
+        },
+
+        theme: {
+          color: "#ff0000"
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+
+    } catch (error) {
+      console.error("Error during payment:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  }
+</script>
+<script>
+  // ✅ Display the saved registration data
+  const savedData = localStorage.getItem("registration-form");
+
+  if (savedData) {
+    const data = JSON.parse(savedData);
+    const outputContent = document.getElementById('output-content');
+    
+    outputContent.innerHTML = `
+      <p><strong>Name:</strong> ${data.name}</p>
+      <p><strong>Email:</strong> ${data.email}</p>
+      <p><strong>Phone:</strong> ${data.phone}</p>
+      <p><strong>College:</strong> ${data.college}</p>
+      <p><strong>Course:</strong> ${data.course}</p>
+      <p><strong>Interest:</strong> ${data.interest}</p>
+    `;
+  } else {
+    document.getElementById('output-content').innerHTML = '<p>No registration data found. Please go back and fill the form.</p>';
+  }
+</script>
+
+</body>
+</html>

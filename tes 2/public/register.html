@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Internship Registration</title>
+  
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init(""); // 🔁 Replace with your actual public key
+    })();
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      padding: 30px;
+      width: 90%;
+      max-width: 420px;
+      color: white;
+      animation: fadeInUp 1.2s ease forwards;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 26px;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 10px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-group label {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      background: transparent;
+      color: #e0e0e0;
+      font-size: 14px;
+      pointer-events: none;
+      transition: 0.3s ease all;
+    }
+
+    .form-group input:focus + label,
+    .form-group input:not(:placeholder-shown) + label,
+    .form-group select:focus + label,
+    .form-group select:not([value=""]) + label {
+      top: -10px;
+      left: 8px;
+      font-size: 12px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0 6px;
+      border-radius: 4px;
+    }
+
+    .form-group select:focus {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #ffffff;
+      color: #111;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #dfe6e9;
+      transform: scale(1.02);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+
+    @media screen and (max-width: 500px) {
+      .form-container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Internship Registration</h2>
+    <form id="registration-form">
+      <div class="form-group">
+        <input type="text" id="name" name="name" required placeholder=" " />
+        <label for="name">Full Name</label>
+      </div>
+
+      <div class="form-group">
+        <input type="email" id="email" name="email" required placeholder=" " />
+        <label for="email">Email ID</label>
+      </div>
+
+      <div class="form-group">
+        <input type="tel" id="phone" name="phone" required placeholder=" " />
+        <label for="phone">Phone Number</label>
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="college" name="college" required placeholder=" " />
+        <label for="college">College Name</label>
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="course" name="course" required placeholder=" " />
+        <label for="course">Course / Branch</label>
+      </div>
+
+      <div class="form-group">
+        <select id="interest" name="interest" required>
+          <option value="" disabled selected hidden></option>
+          <option value="Web Development">Web Development</option>
+          <option value="App Development">App Development</option>
+          <option value="Machine Learning">Machine Learning</option>
+          <option value="Cybersecurity">Cybersecurity</option>
+          <option value="UI/UX Design">UI/UX Design</option>
+          <option value="Forensics">Forensics</option>
+        </select>
+        <label for="interest">Internship Field</label>
+      </div>
+
+      <button type="submit">Register Now</button>
+    </form>
+  </div>
+
+  <script>
+
+    document.getElementById("registration-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+    
+      // Capture form data
+      const formData = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        college: document.getElementById("college").value,
+        course: document.getElementById("course").value,
+        interest: document.getElementById("interest").value
+      };
+    
+      // Store in localStorage
+      localStorage.setItem("registration-form", JSON.stringify(formData));
+    
+      // Redirect to payment gateway
+      window.location.href = "payment.html"; // 👈 Create this next
+    });
+    
+  </script>
+
+</body>
+</html>
