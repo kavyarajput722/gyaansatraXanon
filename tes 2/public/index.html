@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title> GyaanSatra X Anonymous India</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff4c4c;
+      --bg-dark: #0b0b0b;
+      --bg-light: #111;
+      --text-light: #fff;
+      --text-muted: #bbb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top left, #111, #000);
+      color: var(--text-light);
+      scroll-behavior: smooth;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: #1e90ff;
+      text-decoration: none;
+      transition: all 0.3s ease-in-out;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: var(--primary);
+    }
+    .loader-wrapper {
+
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      width: 100%;
+      height: 100%;
+      background: #0b0b0b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loader-wrapper.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-wrapper img {
+      top:45%;
+      width: 120px;
+      height: 120px;
+    }
+    /* ⭐ Animated Stars */
+    .star-background {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      overflow: hidden;
+      z-index: 0;
+      top: 0;
+      left: 0;
+    }
+
+    .stars, .stars2, .stars3 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background-repeat: repeat;
+      background-position: 0 0;
+      animation: animateStars 100s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    /* Larger and glowing stars */
+    .stars {
+      background-image: 
+        radial-gradient(6px 6px at 20% 40%, rgba(255,255,255,0.9) 40%, transparent 60%),
+        radial-gradient(5px 5px at 60% 80%, rgba(204,204,204,0.8) 40%, transparent 60%),
+        radial-gradient(5px 5px at 70% 30%, rgba(238,238,238,0.8) 40%, transparent 60%);
+      animation-duration: 200s;
+    }
+    
+    .stars2 {
+      background-image: 
+        radial-gradient(5px 5px at 25% 60%, rgba(255,255,255,0.8) 40%, transparent 60%),
+        radial-gradient(6px 6px at 80% 20%, rgba(204,204,204,0.7) 40%, transparent 60%),
+        radial-gradient(4px 4px at 90% 90%, rgba(238,238,238,0.7) 40%, transparent 60%);
+      animation-duration: 150s;
+    }
+    
+    .stars3 {
+      background-image: 
+        radial-gradient(4px 4px at 10% 10%, rgba(255,255,255,0.7) 40%, transparent 60%),
+        radial-gradient(5px 5px at 50% 50%, rgba(204,204,204,0.6) 40%, transparent 60%),
+        radial-gradient(4px 4px at 75% 75%, rgba(238,238,238,0.6) 40%, transparent 60%);
+      animation-duration: 100s;
+    }
+    .star-background::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: transparent;
+      backdrop-filter: blur(1px);
+      z-index: 0;
+    }
+    
+
+    @keyframes animateStars {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    /* 🌸 Pink Light Waves */
+    .lightwaves {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 105, 180, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 70%, rgba(255, 20, 147, 0.1) 0%, transparent 60%);
+      background-size: 200% 200%;
+      animation: moveWaves 60s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes moveWaves {
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 100% 100%;
+      }
+      100% {
+        background-position: 0% 0%;
+      }
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .navbar {
+      background: var(--bg-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .brand img {
+      height: 35px;
+      transition: transform 0.3s ease;
+    }
+
+    .brand img:hover {
+      transform: scale(1.1);
+    }
+
+    .menu {
+      display: flex;
+      gap: 25px;
+      transition: 0.3s;
+    }
+
+    .menu a {
+      color: var(--text-light);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .menu a:hover {
+      color: var(--primary);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background: var(--text-light);
+      border-radius: 3px;
+      transition: 0.4s;
+    }
+
+    .menu-mobile {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-light);
+      padding: 10px 20px;
+      position: absolute;
+      top: 65px;
+      right: 20px;
+      width: 200px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      z-index: 1000;
+    
+      /* Hidden by default */
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      transition: opacity 1s ease, transform 0.3s ease;
+    }
+    .menu-mobile.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    
+    
+
+
+    .menu-mobile a {
+      padding: 12px 0;
+      color: var(--text-light);
+      border-bottom: 1px solid #222;
+    }
+
+    .menu-mobile a:hover {
+      color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .menu-mobile.active {
+        display: flex;
+      }
+    }
+
+    .header {
+      text-align: center;
+      padding: 50px 10px 20px;
+    }
+
+    .logo-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .logo-bar img {
+      height: 80px;
+      max-width: 150px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 5px #444);
+      transition: transform 0.4s ease;
+    }
+
+    .logo-bar img:hover {
+      transform: scale(1.1) rotate(2deg);
+    }
+
+    h1 {
+      font-size: 2.8em;
+      margin-bottom: 10px;
+    }
+
+    .sub-info {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    .cta {
+      margin: 30px auto;
+      display: inline-block;
+      padding: 15px 30px;
+      background: var(--primary);
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.1em;
+      transition: all 0.3s ease;
+    }
+
+    .cta:hover {
+      background: #e13434;
+      color: black;
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(255, 76, 76, 0.4);
+    }
+
+    .section {
+      margin-top: 40px;
+      background: var(--bg-light);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.03);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+
+    .section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.05);
+    }
+
+    .section h2 {
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 60px;
+      font-size: 0.9em;
+      color: var(--text-muted);
+    }
+
+    .poster {
+      width: 100%;
+      max-width: 1000px;
+      margin: 30px auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .poster img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    #flame-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -2;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      opacity: 0.25; /* adjust for flame visibility */
+      pointer-events: none;
+      filter: blur(1px) brightness(1.2) saturate(2);
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="loader-wrapper" id="loader">
+    <img src="images/Loading.gif" alt="Loading...">
+  </div>
+  <!-- 🔥 Flame Background Video -->
+<video autoplay muted loop playsinline id="flame-bg">
+  <source src="images/3141211-uhd_3840_2160_25fps.mp4" type="video/mp4" />
+  Your browser does not support HTML5 video.
+</video>
+
+  <!-- Animated Background -->
+  <div class="star-background">
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+  </div>
+
+  <!-- Pink Light Waves -->
+  <div class="lightwaves"></div>
+
+  <!-- NAVBAR -->
+  <div class="navbar" data-aos="fade-down">
+    <div class="brand">
+      <img src="images/x-twitter-logo-on-black-circle-5694247.png" alt="Logo" />
+      Gyaansatra X Anon.India 
+    </div>
+    <div class="menu">
+      <a href="https://gyaansatra.netlify.app" target="_blank">Gyaansatra official</a>
+      <a href="https://collaborg.com" target="_blank">Anonymous India</a>
+      <a href="https://www.linkedin.com/in/gyaan-satra09?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3Boka7VbxcSbeDAnUqh6SM5A%3D%3D">Contact Us</a>
+    </div>
+    <div class="hamburger" onclick="toggleMenu(this)">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="menu-mobile" id="mobileMenu">
+    <a href="https://gyaansatra.netlify.app" target="_blank">Gyaansatra official</a>
+    <a href="#" target="_blank">Partner Website</a>
+    <a href="https://www.linkedin.com/in/gyaan-satra09?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3Boka7VbxcSbeDAnUqh6SM5A%3D%3D">Contact Us</a>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+    <div class="header" data-aos="fade-up">
+      <div class="logo-bar">
+        <img src="images/gyaansatralogo.jpeg" alt="Your Org Logo">
+        <img src="images/ANONYMOUS india logo jpg.jpg" alt="Collaborator Org Logo">
+      </div>
+      <h1>GyaanSatra X Anonymous India</h1>
+      <p class="sub-info">📅 August 16 – October 3 | ⏰ 7:30 PM – 9:30 PM IST | 🌐 Online</p>
+      <a href="register.html" class="cta">Register Now</a>
+    </div>
+
+    <div class="poster" data-aos="zoom-in">
+      <img src="images/second.jpeg" alt="CyberZero Poster" loading="lazy">
+    </div>
+
+    <div class="section" data-aos="fade-right">
+      <h2>📣 About the Program</h2>
+      <p>The <strong>Gyaansatra X Anonymous India Internship Program</strong> is a 45-day online cybersecurity internship to build practical knowledge through real-world projects, expert mentorship, and community collaboration.</p>
+    </div>
+
+    <div class="section" data-aos="fade-left">
+      <h2>✨ Program Highlights</h2>
+      <ul>
+        <li>🔐 Hands-on Training & Live Projects</li>
+        <li>👨‍🏫 Expert-Led Sessions & Mentorship</li>
+        <li>🌐 Real-World Cybersecurity Exposure</li>
+        <li>🤝 Community Engagement & Networking</li>
+      </ul>
+    </div>
+    <div class="section" data-aos="fade-left">
+      <h2>🎓 Key Learning for Interns</h2>
+      <ul>
+        <li>🔐 Basics of Cybersecurity & Ethical Hacking</li>
+        <li>💻 Setting up Kali Linux and vulnerable labs (DVWA, Metasploitable)</li>
+        <li>🕵️ Changing IP addresses using TorNet to become Anonymous</li>
+        <li>🌐 Scanning networks using Nmap</li>
+        <li>🛡️ Performing SQL Injection attacks</li>
+        <li>⚠️ Exploiting XSS & HTML Injection vulnerabilities</li>
+        <li>🔫 Using Metasploit to exploit open ports</li>
+        <li>🪟 Taking over Windows systems & bypassing Defender</li>
+        <li>🧰 Using tools like Villain, msfvenom, mimikatz, winpeas</li>
+        <li>📈 Privilege escalation & maintaining access on compromised systems</li>
+        <li>🧪 Completing real-world hacking labs on TryHackMe</li>
+        <li>🎯 Pivoting attacks across isolated networks</li>
+        <li>🔁 Transferring files using port forwarding</li>
+        <li>⚙️ Creating automated recon tools using Bash scripting</li>
+        <li>🔍 Manual bug hunting on live websites (SQLi, XSS, etc.)</li>
+        <li>🚧 Bypassing IDS using fragmented ping techniques</li>
+        <li>☁️ Bypassing Cloudflare Protection using encoded payload</li>
+        <li>📝 Writing professional vulnerability reports</li>
+        <li>🤖 Jail Breaking or hacking ChatGPT to create or enhance malicious scripts/payloads</li>
+      </ul>
+    </div>
+    
+
+    <div class="section" data-aos="fade-right">
+      <h2>📜 Certification</h2>
+      <p>Certificates will be awarded by:</p>
+      <ul>
+        <li>✅ CyberZero</li>
+        <li>✅ Cybersecurity Council</li>
+        <li>✅ IEEE (Partner Organization)</li>
+      </ul>
+    </div>
+
+    <div class="section" data-aos="fade-left">
+      <h2>📝 Registration Details</h2>
+      <ul>
+        <li>📥 Form shared in WhatsApp Group</li>
+        <li>📆 Duration: 45 Days</li>
+        <li>📍 Mode: Online</li>
+      </ul>
+    </div>
+
+    <div class="section" data-aos="fade-right">
+      <h2>🔗 Join the Community</h2>
+      <p><strong>WhatsApp Group:</strong><br/>
+        <a href="https://chat.whatsapp.com/KS0ci5AjR0xEmNuW8kh6Ym?mode=ac_t" target="_blank">
+          https://chat.whatsapp.com/KS0ci5AjR0xEmNuW8kh6Ym?mode=ac_t
+        </a>
+      </p>
+      <p><strong>Instagram:</strong><br/>
+        <a href="https://www.instagram.com/gyaansatra/?igsh=NGx4a20wcmtzcDZ6" target="_blank">
+          @GyaanSatra
+        </a>
+      </p>
+    </div>
+
+    <div class="section" id="contact" data-aos="fade-left">
+      <h2>📞 Contact Us</h2>
+      <p>Email: gyaansatra@gmail.com</p>
+      <p>Phone: +91-XXXXXXXXXX</p>
+    </div>
+
+    <div class="footer">
+      &copy; 2025 Gyaansatra X Anonymous India. All rights reserved.
+    </div>
+  </div>
+
+  <!-- AOS Animation Script -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      offset: 100,
+      easing: 'ease-in-out',
+      once: true
+    });
+
+    function toggleMenu(el) {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('active');
+    }
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader");
+      loader.classList.add("fade-out");
+    });
+  </script>
+
+</body>
+</html>
